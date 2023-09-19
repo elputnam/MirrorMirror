@@ -25,6 +25,14 @@ let w, h;
 // Order of tiles
 let board = [];
 
+//CCapture
+// var capture = false; // default is to not capture frames, can be changed with button in browser
+var capturer = new CCapture({
+  format:'webm', 
+  workersPath: 'js/',
+  framerate: 5
+});
+
 function preload(){
   base = loadImage('assets/MirrorMirror_base.png');
   mirror1 = loadImage('assets/MirrorMirror_mirror1.png');
@@ -69,6 +77,7 @@ function setup() {
 }
 
 function draw() {
+  if (frameCount==1) capturer.start();
   background(random(360), 100, 100);
 
   //base
@@ -162,6 +171,12 @@ function draw() {
     alp2 = 100;
   }
 }
+
+capturer.capture(document.getElementById('defaultCanvas0'));  
+if (frameCount==1500){
+  save_record();
+}
+print(frameCount);
 }
 
 class Shadow{
@@ -209,4 +224,8 @@ class Tile {
     this.index = i;
     this.img = img;    
   }
+}
+
+function save_record() {
+  capturer.save();
 }
